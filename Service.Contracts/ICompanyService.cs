@@ -5,12 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.Models;
 
-
-namespace Contracts
+namespace Service.Contracts
 {
-    public interface ICompanyRepository
+    public interface ICompanyService
     {
-
         IEnumerable<Company> GetAllCompanies(bool trackChanges);
+
     }
 }
