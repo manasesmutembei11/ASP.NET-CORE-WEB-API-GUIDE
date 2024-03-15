@@ -19,16 +19,12 @@ namespace Market.Presentation.Controllers
         [HttpGet]
         public IActionResult GetCompanies()
         {
-            try
-            {
-                var companies =
+            throw new Exception("Exception");
+
+            var companies =
                 _service.CompanyService.GetAllCompanies(trackChanges: false);
                 return Ok(companies);
-            }
-            catch
-            {
-                return StatusCode(500, "Internal server error");
-            }
+
         }
     }
 
