@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Core;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Market.Presentation.ModelBinders;
 
 namespace Market.Presentation.Controllers
 {
@@ -34,6 +35,27 @@ namespace Market.Presentation.Controllers
             return CreatedAtRoute("CompanyById", new { id = createdCompany.Id },
             createdCompany);
         }
+
+        [HttpGet("collection/({ids})", Name = "CompanyCollection")]
+        public IActionResult GetCompanyCollection([ModelBinder(BinderType =
+        typeof(ArrayModelBinder))]IEnumerable<Guid> ids)
+
+        {
+            var companies = _service.CompanyService.GetByIds(ids, trackChanges: false);
+            return Ok(companies);
+        }
+
+        [HttpPost("collection")]
+        public IActionResult CreateCompanyCollection([FromBody]
+        IEnumerable<CompanyForCreationDto> companyCollection)
+        {
+            var result =
+            _service.CompanyService.CreateCompanyCollection(companyCollection);
+            return CreatedAtRoute("CompanyCollection", new { result.ids },
+            result.companies);
+        }
+
+
 
 
     }
