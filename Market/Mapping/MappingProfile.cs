@@ -15,9 +15,12 @@ namespace Market.Mapping
             CreateMap<Employee, EmployeeDto>();
 
             CreateMap<CompanyForCreationDto, Company>();
+
+            CreateMap<EmployeeForCreationDto, Employee>();
+
         }
 
-        
+
 
     }
 
