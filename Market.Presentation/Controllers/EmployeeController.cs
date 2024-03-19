@@ -22,7 +22,7 @@ namespace Market.Presentation.Controllers
 
         public IActionResult GetEmployeeForCompany(Guid companyId, Guid id)
         {
-            var employee = _service.EmployeeService.GetEmployee(companyId, id,
+            var employee = _service.EmployeeService.GetEmployeeAsync(companyId, id,
             trackChanges: false);
             return Ok(employee);
 
@@ -38,7 +38,7 @@ namespace Market.Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
             var employeeToReturn =
-            _service.EmployeeService.CreateEmployeeForCompany(companyId, employee, trackChanges:
+            _service.EmployeeService.CreateEmployeeForCompanyAsync(companyId, employee, trackChanges:
             false);
             return CreatedAtRoute("GetEmployeeForCompany", new
             {
@@ -52,7 +52,7 @@ namespace Market.Presentation.Controllers
         [HttpDelete("{id:guid}")]
         public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid id)
         {
-            _service.EmployeeService.DeleteEmployeeForCompany(companyId, id, trackChanges:
+            _service.EmployeeService.DeleteEmployeeForCompanyAsync(companyId, id, trackChanges:
             false);
             return NoContent();
         }
@@ -66,13 +66,13 @@ namespace Market.Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            _service.EmployeeService.UpdateEmployeeForCompany(companyId, id, employee,
+            _service.EmployeeService.UpdateEmployeeForCompanyAsync(companyId, id, employee,
             compTrackChanges: false, empTrackChanges: true);
             return NoContent();
         }
 
         [HttpPatch("{id:guid}")]
-        public IActionResult PartiallyUpdateEmployeeForCompany(Guid companyId, Guid id,
+        public async Task<IActionResult> PartiallyUpdateEmployeeForCompany(Guid companyId, Guid id,
         [FromBody] JsonPatchDocument<EmployeeForUpdateDto> patchDoc)
         {
             if (patchDoc is null)
@@ -82,7 +82,7 @@ namespace Market.Presentation.Controllers
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            var result = _service.EmployeeService.GetEmployeeForPatch(companyId, id, compTrackChanges: false, empTrackChanges: true);
+            var result = await _service.EmployeeService.GetEmployeeForPatchAsync(companyId, id, compTrackChanges: false, empTrackChanges: true);
             TryValidateModel(result.employeeToPatch);
             patchDoc.ApplyTo(result.employeeToPatch);
             _service.EmployeeService.SaveChangesForPatch(result.employeeToPatch,

@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Market.Presentation", "Market.Presentation\Market.Presentation.csproj", "{603F94F2-6BE7-4C36-A4AE-425AC3C1A9C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{242A5961-AF34-4E41-9058-E7C562C79A72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{242A5961-AF34-4E41-9058-E7C562C79A72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActionFilters", "ActionFilters", "{25153275-466F-48FD-80CA-B33A8DBCC41C}"
+	ProjectSection(SolutionItems) = preProject
+		ValidationFilterAttribute.cs = ValidationFilterAttribute.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
