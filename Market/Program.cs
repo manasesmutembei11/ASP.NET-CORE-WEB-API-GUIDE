@@ -30,7 +30,10 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 
 // Add services to the container.
-
+builder.Services.AddMvc(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
