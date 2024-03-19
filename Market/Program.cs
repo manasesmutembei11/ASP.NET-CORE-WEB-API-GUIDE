@@ -8,6 +8,7 @@ using NLog;
 using Market.ActionFilters;
 using Service.DataShapping;
 using Shared.DataTransferObjects;
+using Market.Presentation.ActionFilters;
 var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(),
 "/nlog.config"));
@@ -52,6 +53,10 @@ builder.Services.AddControllers(config => {
 }).AddXmlDataContractSerializerFormatters()
  .AddCustomCSVFormatter()
 .AddApplicationPart(typeof(Market.Presentation.AssemblyReference).Assembly);
+
+builder.Services.AddCustomMediaTypes();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+
 
 
 
