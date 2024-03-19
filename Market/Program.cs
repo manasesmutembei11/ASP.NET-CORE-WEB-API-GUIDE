@@ -9,6 +9,7 @@ using Market.ActionFilters;
 using Service.DataShapping;
 using Shared.DataTransferObjects;
 using Market.Presentation.ActionFilters;
+using Market.Utility;
 var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(),
 "/nlog.config"));
@@ -56,6 +57,7 @@ builder.Services.AddControllers(config => {
 
 builder.Services.AddCustomMediaTypes();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
 
 
 

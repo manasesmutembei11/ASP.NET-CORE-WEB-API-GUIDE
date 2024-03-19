@@ -1,4 +1,5 @@
-﻿using Market.Presentation.ActionFilters;
+﻿using Entities.LinkModels;
+using Market.Presentation.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -24,12 +25,16 @@ namespace Market.Presentation.Controllers
         public async Task<IActionResult> GetEmployeesForCompany(Guid companyId,
         [FromQuery] EmployeeParameters employeeParameters)
         {
-            var pagedResult = await _service.EmployeeService.GetEmployeesAsync(companyId,
-            employeeParameters, trackChanges: false);
+            var linkParams = new LinkParameters(employeeParameters, HttpContext);
+            var result = await _service.EmployeeService.GetEmployeesAsync(companyId,
+            linkParams, trackChanges: false);
             Response.Headers.Add("X-Pagination",
-            JsonSerializer.Serialize(pagedResult.metaData));
-            return Ok(pagedResult.employees);
+            JsonSerializer.Serialize(result.metaData));
+        return result.linkResponse.HasLinks ? Ok(result.linkResponse.LinkedEntities) :
+        Ok(result.linkResponse.ShapedEntities);
         }
+
+
 
 
 
