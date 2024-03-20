@@ -10,6 +10,11 @@ namespace Entities.Models
 {
     public class Entity
     {
+        public void Add(string name, object? objectPropertyValue)
+        {
+            throw new NotImplementedException();
+        }
+
         private void WriteLinksToXml(string key, object value, XmlWriter writer)
         {
             writer.WriteStartElement(key);

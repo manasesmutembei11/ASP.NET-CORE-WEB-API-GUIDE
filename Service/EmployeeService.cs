@@ -20,6 +20,10 @@ namespace Service
         private readonly IDataShaper<EmployeeDto> _dataShaper;
         private readonly IEmployeeLinks _employeeLinks;
 
+        public IRepositoryManager RepositoryManager { get; }
+        public ILoggerManager Logger { get; }
+        public IMapper Mapper { get; }
+        public IEmployeeLinks EmployeeLinks { get; }
 
         public EmployeeService(IRepositoryManager repository, ILoggerManager
         logger, IMapper mapper, IDataShaper<EmployeeDto> dataShaper, IEmployeeLinks employeeLinks)
@@ -29,6 +33,14 @@ namespace Service
             _mapper = mapper;
             _dataShaper = dataShaper;
             _employeeLinks = employeeLinks;
+        }
+
+        public EmployeeService(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper, IEmployeeLinks employeeLinks)
+        {
+            RepositoryManager = repositoryManager;
+            Logger = logger;
+            Mapper = mapper;
+            EmployeeLinks = employeeLinks;
         }
 
         private async Task CheckIfCompanyExists(Guid companyId, bool trackChanges)

@@ -22,7 +22,10 @@ namespace Market.Presentation.Controllers
     {
         private readonly IServiceManager _service;
         public CompaniesController(IServiceManager service) => _service = service;
-        [HttpGet]
+        
+        
+       
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await
@@ -40,8 +43,9 @@ namespace Market.Presentation.Controllers
             return Ok(company);
         }
 
-        [HttpPost]
         
+
+        [HttpPost(Name = "CreateCompany")]
 
         public async Task<IActionResult> CreateCompany([FromBody] CompanyForCreationDto company)
         {
