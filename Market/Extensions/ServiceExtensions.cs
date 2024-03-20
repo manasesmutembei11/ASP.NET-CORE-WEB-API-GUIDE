@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Service.Contracts;
+using Asp.Versioning;
+using Marvin.Cache;
+using AspNetCoreRateLimit;
+
 
 namespace Market.Extensions
 {
@@ -69,6 +73,42 @@ namespace Market.Extensions
                 }
             });
         }
+
+        public static void ConfigureVersioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+            });
+        }
+
+        public static void ConfigureResponseCaching(this IServiceCollection services) =>
+        services.AddResponseCaching();
+
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
+        services.AddHttpCacheHeaders();
+
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>
+{
+        new RateLimitRule
+        {Endpoint = "*", Limit = 3, Period = "5m"}
+         };
+            services.Configure<IpRateLimitOptions>(opt => {
+                opt.GeneralRules =
+            rateLimitRules;
+            });
+            services.AddSingleton<IRateLimitCounterStore,
+            MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        }
+
+
 
 
 

@@ -10,6 +10,7 @@ using Service.DataShapping;
 using Shared.DataTransferObjects;
 using Market.Presentation.ActionFilters;
 using Market.Utility;
+using AspNetCoreRateLimit;
 var builder = WebApplication.CreateBuilder(args);
 LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(),
 "/nlog.config"));
@@ -20,8 +21,12 @@ new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
 .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
 .OfType<NewtonsoftJsonPatchInputFormatter>().First();
 
+builder.Services.ConfigureHttpCacheHeaders();
 
-
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
@@ -51,6 +56,11 @@ builder.Services.AddControllers(config => {
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
     config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
+    config.CacheProfiles.Add("120SecondsDuration", new CacheProfile
+    {
+        Duration = 120
+    });
+
 }).AddXmlDataContractSerializerFormatters()
  .AddCustomCSVFormatter()
 .AddApplicationPart(typeof(Market.Presentation.AssemblyReference).Assembly);
@@ -58,6 +68,8 @@ builder.Services.AddControllers(config => {
 builder.Services.AddCustomMediaTypes();
 builder.Services.AddScoped<ValidateMediaTypeAttribute>();
 builder.Services.AddScoped<IEmployeeLinks, EmployeeLinks>();
+
+
 
 
 
@@ -96,7 +108,11 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+app.UseIpRateLimiting();
 app.UseCors("CorsPolicy");
+app.UseResponseCaching();
+app.UseHttpCacheHeaders();
+
 
 
 app.UseAuthorization();
