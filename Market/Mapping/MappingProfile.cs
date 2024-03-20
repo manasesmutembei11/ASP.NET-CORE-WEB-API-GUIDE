@@ -22,6 +22,9 @@ namespace Market.Mapping
             
             CreateMap<CompanyForUpdateDto, Company>();
 
+            CreateMap<UserForRegistrationDto, User>();
+
+
 
         }
 

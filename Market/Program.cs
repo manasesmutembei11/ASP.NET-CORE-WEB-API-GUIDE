@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using NLog;
-using Market.ActionFilters;
 using Service.DataShapping;
 using Shared.DataTransferObjects;
+using Market.ActionFilters;
 using Market.Presentation.ActionFilters;
 using Market.Utility;
 using AspNetCoreRateLimit;
@@ -21,8 +21,9 @@ new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
 .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
 .OfType<NewtonsoftJsonPatchInputFormatter>().First();
 
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureHttpCacheHeaders();
-
+builder.Services.ConfigureIdentity();
 builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
@@ -114,7 +115,7 @@ app.UseResponseCaching();
 app.UseHttpCacheHeaders();
 
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

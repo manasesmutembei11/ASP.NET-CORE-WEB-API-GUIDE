@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Market.ActionFilters
+namespace Market.Presentation.ActionFilters
 {
-    public class ValidationFilterAttribute : IActionFilter
+    public class ValidationFilter : IActionFilter
     {
-        public ValidationFilterAttribute()
+        public ValidationFilter()
         { }
         public void OnActionExecuting(ActionExecutingContext context)
         {

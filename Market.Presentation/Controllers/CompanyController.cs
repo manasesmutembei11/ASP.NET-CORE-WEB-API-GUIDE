@@ -13,13 +13,15 @@ using Newtonsoft.Json.Linq;
 using static System.Collections.Specialized.BitVector32;
 using System.Runtime.Intrinsics.X86;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Market.Presentation.Controllers
 {
     
     [Route("api/companies")]
     [ApiController]
-   // [ResponseCache(CacheProfileName = "120SecondsDuration")]
+    [Authorize]
+    // [ResponseCache(CacheProfileName = "120SecondsDuration")]
 
     public class CompaniesController : ControllerBase
     {
@@ -29,6 +31,7 @@ namespace Market.Presentation.Controllers
         
        
         [HttpGet(Name = "GetCompanies")]
+        
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await
